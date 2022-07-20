@@ -13,6 +13,5 @@ Originally made by Villalon: https://github.com/villalon/eMarkingWeb
 - Run `mvn package`, now the jar file can be found in the target folder
 
 ## Run instructions
-- On Windows you will need `gsdll64.dll` on the same folder as the jar
-- You also need the log4j.properties and moodle.properties files
+- You will need `gsdll64.dll`, `log4j.properties` and `moodle.properties` on the same folder as the jar
 - Run with `java -jar eMarkingdesktop-0.1.1.jar`
