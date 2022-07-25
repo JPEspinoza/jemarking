@@ -293,12 +293,7 @@ public class ImageDecoder implements Runnable {
 		// Create qr image from original for decoding
 
 		BufferedImage qrcorner = extractTopRightCornerForQR(image);
-		BufferedImage blackWhite = new BufferedImage(qrcorner.getWidth() / 2, qrcorner.getHeight() / 2, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = blackWhite.createGraphics();
-        g2d.drawImage(qrcorner, 0, 0, qrcorner.getWidth() / 2, qrcorner.getHeight() / 2, null);
-        g2d.dispose();
-        qrcorner = blackWhite;
-        
+
 		QrDecodingResult decodingresult = new QrDecodingResult();
 
 		try {
