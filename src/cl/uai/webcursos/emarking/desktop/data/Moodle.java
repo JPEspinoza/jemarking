@@ -595,6 +595,8 @@ public class Moodle {
 		}
 		List<Integer> coursesToRetrieve = new ArrayList<Integer>();
 		if(courseId < 0) {
+			// this seems to add all the courses for a single user...
+			// in what scenario is this functionality used???
 			for(Integer cid : usercourses.keySet()) {
 				coursesToRetrieve.add(cid);
 			}			

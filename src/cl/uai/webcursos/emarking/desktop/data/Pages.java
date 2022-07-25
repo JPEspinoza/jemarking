@@ -277,6 +277,10 @@ public class Pages extends Hashtable<Integer, Page> {
 	}
 	
 	private void updateStats(Page p) {
+		// I think this gets called everytime a page is added to this structure.
+		// check all pages and ensure the courseid is the same for all of them
+		// spoiler: this DOES NOT get called to add pages and cant produce the desired behaviour
+
 		if(p.getStudent() != null) {
 			if(p.getStudent().getPages() > max) {
 				max = p.getStudent().getPages();
