@@ -15,3 +15,7 @@ Originally made by Villalon: https://github.com/villalon/eMarkingWeb
 ## Run instructions
 - You will need `gsdll64.dll`, `log4j.properties` and `moodle.properties` on the same folder as the jar
 - Run with `java -jar eMarkingdesktop-0.1.1.jar`
+
+## TODO
+- Alert the user if tests from different sections are in the pdf
+- Improve QR recognition
