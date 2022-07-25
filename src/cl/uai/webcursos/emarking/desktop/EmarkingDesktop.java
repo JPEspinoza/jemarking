@@ -153,11 +153,29 @@ public class EmarkingDesktop {
 			System.exit(e3.hashCode());
 		}
 
-		moodle.getQrExtractor().addPageProcessedListener(new PageProcessedListener() {			
+		// for some reason to be accessed from within the listener it needs to be final
+		final int[] courseId = {0};
+
+		moodle.getQrExtractor().addPageProcessedListener(new PageProcessedListener() {
+			// once the page is processed this code runs?
+			// it shows the log on the terminal and updates the taskbar
+
 			@Override
 			public void processed(QRExtractorEvent e) {
 
 				QrDecodingResult qrResult = e.getQrresult();
+				if(qrResult.getCourseid() == 0) {
+					// if the courseId is 0 we don't do anything
+				} else if (courseId[0] == 0) {
+					// if the id is empty we fill it
+					courseId[0] = qrResult.getCourseid();
+				} else if (courseId[0] != qrResult.getCourseid()) {
+					// if the ids are not the same we tell the user
+					// also write the situation to the log
+					logger.debug("Curso equivocado encontrado!!! - id esperada: "+ courseId[0] + "- id encontrada: " + qrResult.getCourseid());
+					System.exit(0);
+				}
+				//else no need to do anything
 
 				// Update progress bar
 				int arg0 = progress.getProgressBar().getValue();
@@ -206,8 +224,8 @@ public class EmarkingDesktop {
 				p.setFilename(e.isBackPage() ? qrResult.getBackfilename() : qrResult.getFilename());
 				p.setRow(pagesTable.getModel().getRowCount());
 				p.setProblem(e.getQrresult().getOutput());
-				p.setCourse(moodle.getCourses().containsKey(qrResult.getCourseid()) ? moodle.getCourses().get(qrResult.getCourseid()) : null);
-				p.setStudent(moodle.getStudents().containsKey(qrResult.getUserid()) ? moodle.getStudents().get(qrResult.getUserid()) : null);
+				p.setCourse(moodle.getCourses().getOrDefault(qrResult.getCourseid(), null));
+				p.setStudent(moodle.getStudents().getOrDefault(qrResult.getUserid(), null));
 				p.setPagenumber(qrResult.getExampage());
 				p.setRotated(qrResult.isRotated());
 				if(p.getStudent() != null) {
