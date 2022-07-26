@@ -497,7 +497,8 @@ public class OptionsDialog extends JDialog
         OptionsDialog.logger.debug("Testing Moodle connection");
         this.moodle.setUrl(this.moodleurl.getText());
         this.moodle.setUsername(this.username.getText());
-        final String _password = new String(this.password.getPassword());
+        String _password = new String(this.password.getPassword());
+        _password = moodle.encodeString(_password);
         this.moodle.setPassword(_password);
         if (this.moodle.connect()) {
             this.btnTestConnection.setIcon(new ImageIcon(EmarkingDesktop.class.getResource("/cl/uai/webcursos/emarking/desktop/resources/glyphicons_206_ok_2.png")));

@@ -4,26 +4,18 @@
 
 package cl.uai.webcursos.emarking.desktop.data;
 
+import java.io.*;
 import java.net.URLConnection;
 import java.awt.Component;
 import javax.swing.JOptionPane;
 import java.net.URLEncoder;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
 import javax.json.Json;
-import java.io.StringReader;
 import javax.json.JsonArray;
-import java.io.Reader;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.File;
 import java.util.Properties;
 import java.util.Map;
 import java.util.Iterator;
@@ -710,5 +702,26 @@ public class Moodle
     
     public void setFakeStudents(final boolean fakeStudents) {
         this.fakeStudents = fakeStudents;
+    }
+
+    /**
+     * @param password string to encode
+     * @return encode password
+     */
+    public String encodeString(String password){
+
+        try {
+            password = URLEncoder.encode(password, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return password;
+    }
+
+    /**
+     Java runtime version **/
+    public String javaRuntimeVersion() {
+        return System.getProperty("java.runtime.version");
     }
 }
