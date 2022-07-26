@@ -123,10 +123,23 @@ public class EmarkingDesktop
     
     private void initialize() {
         this.moodle = new Moodle();
+        final int[] courseId = {0};
         this.moodle.getQr().addPageProcessedListener(new PageProcessedListener() {
             @Override
             public void processed(final QRExtractorEvent e) {
                 final QrDecodingResult qrResult = e.getQrresult();
+
+                if(qrResult.getCourseid() == 0) {
+                    // if the courseId is 0 we don't do anything
+                } else if (courseId[0] == 0) {
+                    // if the id is empty we fill it
+                    courseId[0] = qrResult.getCourseid();
+                } else if (courseId[0] != qrResult.getCourseid()) {
+                    // if the ids are not the same we tell the user
+                    // also write the situation to the log
+                    logger.debug("Curso equivocado encontrado!!! - id esperada: "+ courseId[0] + "- id encontrada: " + qrResult.getCourseid());
+                }
+
                 int arg0 = EmarkingDesktop.this.progress.getProgressBar().getValue();
                 ++arg0;
                 EmarkingDesktop.this.progress.getProgressBar().setValue(arg0);
@@ -170,8 +183,8 @@ public class EmarkingDesktop
                 p.setFilename(e.isBackPage() ? qrResult.getBackfilename() : qrResult.getFilename());
                 p.setRow(EmarkingDesktop.this.pagesTable.getModel().getRowCount());
                 p.setProblem(e.getQrresult().getOutput());
-                p.setCourse(EmarkingDesktop.this.moodle.getCourses().containsKey(qrResult.getCourseid()) ? EmarkingDesktop.this.moodle.getCourses().get(qrResult.getCourseid()) : null);
-                p.setStudent(EmarkingDesktop.this.moodle.getStudents().containsKey(qrResult.getUserid()) ? EmarkingDesktop.this.moodle.getStudents().get(qrResult.getUserid()) : null);
+                p.setCourse(EmarkingDesktop.this.moodle.getCourses().getOrDefault(qrResult.getCourseid(), null));
+                p.setStudent(EmarkingDesktop.this.moodle.getStudents().getOrDefault(qrResult.getUserid(), null));
                 p.setPagenumber(qrResult.getExampage());
                 p.setRotated(qrResult.isRotated());
                 if (p.getStudent() != null) {
