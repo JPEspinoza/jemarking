@@ -1,98 +1,78 @@
-/**
- * 
- */
+// 
+// Decompiled by Procyon v1.0-SNAPSHOT
+// 
+
 package cl.uai.webcursos.emarking.desktop;
 
 import java.awt.Component;
-
-import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
-
-import org.apache.log4j.Logger;
-
-import cl.uai.webcursos.emarking.desktop.data.Moodle;
 import cl.uai.webcursos.emarking.desktop.data.Student;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import cl.uai.webcursos.emarking.desktop.data.Moodle;
+import org.apache.log4j.Logger;
+import javax.swing.JTable;
 
-/**
- * @author jorgevillalon
- *
- */
-public class StudentsTable extends JTable {
-
-	private static Logger logger = Logger.getLogger(StudentsTable.class);
-	private StudentsTableModel model;
-	private StudentsTableCellRenderer renderer;
-	private Moodle moodle;
-
-	private final static Object[][] emptydata = {};
-
-	private final static String[] columnNames = {
-		"#",
-		EmarkingDesktop.lang.getString("student"),
-		EmarkingDesktop.lang.getString("pages"),
-		"Answers"
-	};
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2094514351707140215L;
-
-	public StudentsTable(Moodle _moodle) {
-		super(new StudentsTableModel(emptydata, columnNames));
-
-		this.moodle = _moodle;
-		this.renderer = new StudentsTableCellRenderer(moodle);
-		this.setDefaultRenderer(Object.class, this.renderer);
-
-		this.setAutoResizeMode(AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-		this.setStudentsTableModel((StudentsTableModel) this.getModel());
-	}
-
-	public StudentsTableModel getPagesTableModel() {
-		return model;
-	}
-
-	public void setStudentsTableModel(StudentsTableModel model) {
-		this.model = model;
-	}
-
-	/**
-	 * 
-	 * @param data
-	 * @param row
-	 * @param doubleside
-	 */
-	public void updateData(Student student) {
-		if(this.model.getRowCount() == 0) {
-			for(int i=0; i<this.moodle.getStudents().size(); i++) {
-				Student st = this.moodle.getStudentByRowNumber(i);
-				this.model.addRow((Object[]) null);
-				if(st != null) {
-					this.setValueAt(st.getRownumber()+1, i, 0);
-					this.setValueAt(st.getFullname(), i, 1);
-					this.setValueAt(st.getPages(), i, 2);
-					this.setValueAt(st.getAnswersValues(), i, 3);
-				} else {
-					logger.error("Invalid student");
-				}
-			}
-		}
-		int row = student.getRownumber();
-		this.setValueAt(student.getRownumber()+1, row, 0);
-		this.setValueAt(student.getFullname(), row, 1);
-		this.setValueAt(student.getPages(), row, 2);
-		this.setValueAt(student.getAnswersValues(), row, 3);
-
-		// Resize columns code
-		for(int i=0;i<this.model.getColumnCount();i++) {
-			int width = 0;
-			for (int mrow = 0; mrow < this.getRowCount(); mrow++) {
-				TableCellRenderer renderer = this.getCellRenderer(mrow, i);
-				Component comp = this.prepareRenderer(renderer, mrow, i);
-				width = Math.max (comp.getPreferredSize().width, width);
-			}
-			this.getColumnModel().getColumn(i).setPreferredWidth(width);
-		}
-	}
+public class StudentsTable extends JTable
+{
+    private static Logger logger;
+    private StudentsTableModel model;
+    private StudentsTableCellRenderer renderer;
+    private Moodle moodle;
+    private static final Object[][] emptydata;
+    private static final String[] columnNames;
+    private static final long serialVersionUID = -2094514351707140215L;
+    
+    static {
+        StudentsTable.logger = Logger.getLogger(StudentsTable.class);
+        emptydata = new Object[0][];
+        columnNames = new String[] { "#", EmarkingDesktop.lang.getString("student"), EmarkingDesktop.lang.getString("pages"), "Answers" };
+    }
+    
+    public StudentsTable(final Moodle _moodle) {
+        super(new StudentsTableModel(StudentsTable.emptydata, StudentsTable.columnNames));
+        this.moodle = _moodle;
+        this.setDefaultRenderer(Object.class, this.renderer = new StudentsTableCellRenderer(this.moodle));
+        this.setAutoResizeMode(2);
+        this.setStudentsTableModel((StudentsTableModel)this.getModel());
+    }
+    
+    public StudentsTableModel getPagesTableModel() {
+        return this.model;
+    }
+    
+    public void setStudentsTableModel(final StudentsTableModel model) {
+        this.model = model;
+    }
+    
+    public void updateData(final Student student) {
+        if (this.model.getRowCount() == 0) {
+            for (int i = 0; i < this.moodle.getStudents().size(); ++i) {
+                final Student st = this.moodle.getStudentByRowNumber(i);
+                this.model.addRow((Object[])null);
+                if (st != null) {
+                    this.setValueAt(st.getRownumber() + 1, i, 0);
+                    this.setValueAt(st.getFullname(), i, 1);
+                    this.setValueAt(st.getPages(), i, 2);
+                    this.setValueAt(st.getAnswersValues(), i, 3);
+                }
+                else {
+                    StudentsTable.logger.error("Invalid student");
+                }
+            }
+        }
+        final int row = student.getRownumber();
+        this.setValueAt(student.getRownumber() + 1, row, 0);
+        this.setValueAt(student.getFullname(), row, 1);
+        this.setValueAt(student.getPages(), row, 2);
+        this.setValueAt(student.getAnswersValues(), row, 3);
+        for (int j = 0; j < this.model.getColumnCount(); ++j) {
+            int width = 0;
+            for (int mrow = 0; mrow < this.getRowCount(); ++mrow) {
+                final TableCellRenderer renderer = this.getCellRenderer(mrow, j);
+                final Component comp = this.prepareRenderer(renderer, mrow, j);
+                width = Math.max(comp.getPreferredSize().width, width);
+            }
+            this.getColumnModel().getColumn(j).setPreferredWidth(width);
+        }
+    }
 }
