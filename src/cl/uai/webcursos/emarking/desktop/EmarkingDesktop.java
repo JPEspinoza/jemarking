@@ -138,6 +138,16 @@ public class EmarkingDesktop
                     // if the ids are not the same we tell the user
                     // also write the situation to the log
                     logger.debug("Curso equivocado encontrado!!! - id esperada: "+ courseId[0] + "- id encontrada: " + qrResult.getCourseid());
+
+                    // show message and then force close
+                    // the message has the process bar as its parent, so we can ensure it always shows on top
+                    JOptionPane.showMessageDialog(
+                            EmarkingDesktop.this.progress,
+                            EmarkingDesktop.lang.getString("incorrectidfound"),
+                            "eMarking",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    System.exit(0);
                 }
 
                 int arg0 = EmarkingDesktop.this.progress.getProgressBar().getValue();
