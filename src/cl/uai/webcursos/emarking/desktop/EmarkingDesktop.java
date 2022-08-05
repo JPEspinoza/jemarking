@@ -129,6 +129,9 @@ public class EmarkingDesktop
             public void processed(final QRExtractorEvent e) {
                 final QrDecodingResult qrResult = e.getQrresult();
 
+                int arg0 = EmarkingDesktop.this.progress.getProgressBar().getValue();
+                ++arg0;
+
                 if(qrResult.getCourseid() == 0) {
                     // if the courseId is 0 we don't do anything
                 } else if (courseId[0] == 0) {
@@ -143,15 +146,13 @@ public class EmarkingDesktop
                     // the message has the process bar as its parent, so we can ensure it always shows on top
                     JOptionPane.showMessageDialog(
                             EmarkingDesktop.this.progress,
+                            "Curso equivocado encontrado en pagina " + arg0 + ", ID encontrada: " + qrResult.getCourseid() + ", ID esperada: " + courseId[0],
                             EmarkingDesktop.lang.getString("incorrectidfound"),
-                            "eMarking",
                             JOptionPane.ERROR_MESSAGE
                     );
                     System.exit(0);
                 }
 
-                int arg0 = EmarkingDesktop.this.progress.getProgressBar().getValue();
-                ++arg0;
                 EmarkingDesktop.this.progress.getProgressBar().setValue(arg0);
                 EmarkingDesktop.logger.debug("IDENTIFIED - Student:" + qrResult.getUserid() + " Course:" + qrResult.getCourseid() + " Page:" + qrResult.getExampage());
                 Label_0165: {
