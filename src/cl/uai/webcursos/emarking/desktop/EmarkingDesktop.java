@@ -146,7 +146,7 @@ public class EmarkingDesktop
                     // the message has the process bar as its parent, so we can ensure it always shows on top
                     JOptionPane.showMessageDialog(
                             EmarkingDesktop.this.progress,
-                            "Curso equivocado encontrado en pagina " + arg0 + ", ID encontrada: " + qrResult.getCourseid() + ", ID esperada: " + courseId[0],
+                            "Curso equivocado encontrado en página " + arg0 + ", ID encontrada: " + qrResult.getCourseid() + ", ID esperada: " + courseId[0],
                             EmarkingDesktop.lang.getString("incorrectidfound"),
                             JOptionPane.ERROR_MESSAGE
                     );
